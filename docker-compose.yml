@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  telegram-forwarder:
+    image: telegram-forwarder:latest
+    # Remova ou comente a seção 'build' para uso com Swarm
+    build:
+      context: .
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    volumes:
+      - ./session:/app/telegram_session
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    networks:
+      - telegram_network
+
+networks:
+  telegram_network:
+    driver: overlay
+    attachable: true
