@@ -41,8 +41,8 @@ Características principais:
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/telegram-forwarder.git
-   cd telegram-forwarder
+   git clone https://github.com/andersonlemesc/telegram-forwarder-n8n.git
+   cd telegram-forwarder-n8n
    ```
 
 2. Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
@@ -110,6 +110,28 @@ Características principais:
 
 ### 6. Primeira Execução e Autenticação
 
+Existem duas maneiras de fazer a primeira autenticação:
+
+#### Opção 1: Usando o script init-session.sh (Recomendado)
+
+Este script foi criado especificamente para facilitar a primeira autenticação:
+
+1. Torne o script executável:
+   ```bash
+   chmod +x init-session.sh
+   ```
+
+2. Execute o script:
+   ```bash
+   ./init-session.sh
+   ```
+
+3. Na primeira execução, você receberá uma mensagem no Telegram com código de verificação
+4. Digite o código quando solicitado no terminal
+5. Após a autenticação bem-sucedida, a sessão será salva na pasta `session/`
+
+#### Opção 2: Usando o Docker Compose
+
 1. Construa a imagem Docker:
    ```bash
    docker-compose build
@@ -146,12 +168,14 @@ Se você deseja usar o Docker Swarm para alta disponibilidade:
    docker swarm init
    ```
 
-2. Implante o serviço:
+2. **Importante:** Realize a autenticação primeiro usando o script `init-session.sh` antes de implantar no Swarm.
+
+3. Implante o serviço:
    ```bash
    docker stack deploy -c docker-compose.yml telegram-forwarder
    ```
 
-3. Verifique o status do serviço:
+4. Verifique o status do serviço:
    ```bash
    docker service ls
    docker service logs telegram-forwarder_telegram-forwarder
